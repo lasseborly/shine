@@ -1,0 +1,16 @@
+{
+  "name": "shine",
+  "version": "0.0.1",
+  "description": "A small CLI for controlling Lifx bulbs.",
+  "main": "index.js",
+  "author": "Lasse Borly <contact@lasseborly.dk>",
+  "bin": {
+    "shine": "./index.js"
+  },
+  "preferGlobal": "true",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
+}
