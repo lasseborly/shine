@@ -3,16 +3,15 @@
 
 const cmd = require('commander')
 const https = require('https')
-
-const token = ''
+const token = require('./token.js')
 
 cmd
   .version('1.0.0')
 
 cmd
-  .command('list')
+  .command('list [env]')
   .description('list bulbs')
-  .action(() => list())
+  .action((env, options) => list(env, options))
 
 cmd
   .command('toggle')
@@ -36,18 +35,29 @@ function raw () {
   .catch(err => console.log(err))
 }
 
-function list () {
-  lifx('get', 'lights/all')
-  .then(res => {
-    res.forEach(bulb => {
-      console.log(`Name: ${bulb.label}`)
-      console.log(`Connected: ${bulb.connected}`)
-      console.log(`Power: ${bulb.power}`)
-      console.log(`Group: ${bulb.group.name}`)
-      console.log('------------------------------')
+function list (env, options) {
+
+  if(options.group) {
+    lifx('get', `lights/group:${options.group}`)
+    .then(res => {
+      res.forEach(bulb => {
+        console.log(bulb.label)
+      })
     })
-  })
   .catch(err => console.log(err))
+  } else {
+    lifx('get', 'lights/all')
+    .then(res => {
+      res.forEach(bulb => {
+        console.log(`Name: ${bulb.label}`)
+        console.log(`Connected: ${bulb.connected}`)
+        console.log(`Power: ${bulb.power}`)
+        console.log(`Group: ${bulb.group.name}`)
+        console.log('------------------------------')
+      })
+    })
+    .catch(err => console.log(err))
+  }
 }
 
 function toggle () {
@@ -72,6 +82,10 @@ function lifx (method, path) {
   }
   return new Promise((resolve, reject) => {
     const req = https.request(options, res => {
+      if (res.statusCode != 200) {
+        reject(res.statusCode)
+      }
+
       let body = ''
       res.on('data', data => {
         body += data
