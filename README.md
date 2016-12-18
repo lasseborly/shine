@@ -24,3 +24,33 @@ Options:
   -h, --help      output usage information
   -V, --version   output the version number
 ```
+
+### List all
+
+```shell
+shine list
+```
+
+### List group
+
+```shell
+shine list -g BedRoom
+``` 
+
+### Toggle all
+
+```shell
+shine toggle
+```
+
+### Toggle group
+
+```shell
+shine toggle -g LivingRoom
+```
+
+### Toggle a single bulb
+
+```shell
+shine toggle -l Table
+```

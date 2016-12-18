@@ -6,18 +6,19 @@ const https = require('https')
 const token = require('./token.js')
 
 cmd
-  .version('1.0.0')
+  .version('0.0.1')
 
 cmd
-  .command('list [env]')
+  .command('list [options]')
   .description('list bulbs')
   .option('-g, --group [group]', 'List bulbs from a group')
   .action((env, options) => list(env, options))
 
 cmd
-  .command('toggle [env]')
+  .command('toggle [options]')
   .description('toggle bulbs on/off')
   .option('-g, --group [group]', 'Toggle bulbs from a group')
+  .option('-l, --label [label]', 'Toggle bulb')
   .action((env, options) => toggle(env, options))
 
 cmd.parse(process.argv)
@@ -28,7 +29,7 @@ function list (env, options) {
     .then(res => {
       console.log('------------------------------')
       res.forEach(bulb => {
-        console.log(`Name: ${bulb.label}`)
+        console.log(`Label: ${bulb.label}`)
         console.log(`Connected: ${bulb.connected}`)
         console.log(`Power: ${bulb.power}`)
         console.log('------------------------------')
@@ -40,7 +41,7 @@ function list (env, options) {
     .then(res => {
       console.log('------------------------------')
       res.forEach(bulb => {
-        console.log(`Name: ${bulb.label}`)
+        console.log(`Label: ${bulb.label}`)
         console.log(`Connected: ${bulb.connected}`)
         console.log(`Power: ${bulb.power}`)
         console.log(`Group: ${bulb.group.name}`)
@@ -57,7 +58,18 @@ function toggle (env, options) {
     .then(res => {
       console.log('------------------------------')
       res.results.forEach(bulb => {
-        console.log(`Name: ${bulb.label}`)
+        console.log(`Label: ${bulb.label}`)
+        console.log(`Status: ${bulb.status}`)
+        console.log('------------------------------')
+      })
+    })
+    .catch(err => console.log(err))
+  } else if (options.label) {
+    lifx('post', `lights/label:${options.label}/toggle`)
+    .then(res => {
+      console.log('------------------------------')
+      res.results.forEach(bulb => {
+        console.log(`Label: ${bulb.label}`)
         console.log(`Status: ${bulb.status}`)
         console.log('------------------------------')
       })
@@ -68,7 +80,7 @@ function toggle (env, options) {
     .then(res => {
       console.log('------------------------------')
       res.results.forEach(bulb => {
-        console.log(`Name: ${bulb.label}`)
+        console.log(`Label: ${bulb.label}`)
         console.log(`Status: ${bulb.status}`)
         console.log('------------------------------')
       })
