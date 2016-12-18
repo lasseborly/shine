@@ -11,43 +11,34 @@ cmd
 cmd
   .command('list [env]')
   .description('list bulbs')
+  .option('-g, --group [group]', 'List bulbs from a group')
   .action((env, options) => list(env, options))
 
 cmd
-  .command('toggle')
+  .command('toggle [env]')
   .description('toggle bulbs on/off')
-  .action(() => toggle())
-
-cmd
-  .command('raw')
-  .description('get raw data')
-  .action(() => raw())
+  .option('-g, --group [group]', 'Toggle bulbs from a group')
+  .action((env, options) => toggle(env, options))
 
 cmd.parse(process.argv)
 
-function raw () {
-  lifx('get', 'lights/all')
-  .then(res => {
-    res.forEach(bulb => {
-      console.log(bulb)
-    })
-  })
-  .catch(err => console.log(err))
-}
-
 function list (env, options) {
-
   if(options.group) {
     lifx('get', `lights/group:${options.group}`)
     .then(res => {
+      console.log('------------------------------')
       res.forEach(bulb => {
-        console.log(bulb.label)
+        console.log(`Name: ${bulb.label}`)
+        console.log(`Connected: ${bulb.connected}`)
+        console.log(`Power: ${bulb.power}`)
+        console.log('------------------------------')
       })
     })
   .catch(err => console.log(err))
   } else {
     lifx('get', 'lights/all')
     .then(res => {
+      console.log('------------------------------')
       res.forEach(bulb => {
         console.log(`Name: ${bulb.label}`)
         console.log(`Connected: ${bulb.connected}`)
@@ -60,14 +51,31 @@ function list (env, options) {
   }
 }
 
-function toggle () {
-  lifx('post', 'lights/all/toggle')
-  .then(res => {
-    res.results.forEach(bulb => {
-      console.log(`Name: ${bulb.label} Status: ${bulb.status}`)
+function toggle (env, options) {
+  if(options.group) {
+    lifx('post', `lights/group:${options.group}/toggle`)
+    .then(res => {
+      console.log('------------------------------')
+      res.results.forEach(bulb => {
+        console.log(`Name: ${bulb.label}`)
+        console.log(`Status: ${bulb.status}`)
+        console.log('------------------------------')
+      })
     })
-  })
-  .catch(err => console.log(err))
+    .catch(err => console.log(err))
+  } else {
+    lifx('post', 'lights/all/toggle')
+    .then(res => {
+      console.log('------------------------------')
+      res.results.forEach(bulb => {
+        console.log(`Name: ${bulb.label}`)
+        console.log(`Status: ${bulb.status}`)
+        console.log('------------------------------')
+      })
+    })
+    .catch(err => console.log(err))
+  }
+
 }
 
 function lifx (method, path) {
@@ -82,9 +90,6 @@ function lifx (method, path) {
   }
   return new Promise((resolve, reject) => {
     const req = https.request(options, res => {
-      if (res.statusCode != 200) {
-        reject(res.statusCode)
-      }
 
       let body = ''
       res.on('data', data => {

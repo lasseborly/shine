@@ -1,7 +1,7 @@
 {
   "name": "shine",
   "version": "0.0.1",
-  "description": "A small CLI for controlling Lifx bulbs.",
+  "description": "A small CLI for controlling LIFX bulbs.",
   "main": "index.js",
   "author": "Lasse Borly <contact@lasseborly.dk>",
   "bin": {
