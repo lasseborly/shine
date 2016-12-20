@@ -5,12 +5,17 @@
   "main": "index.js",
   "author": "Lasse Borly <contact@lasseborly.dk>",
   "bin": {
-    "shine": "./index.js"
+    "shine": "src/shine.js"
+  },
+  "scripts": {
+    "test": "jest"
   },
   "preferGlobal": true,
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "18.0.0"
+  },
   "dependencies": {
-    "commander": "^2.9.0"
+    "commander": "2.9.0"
   }
 }

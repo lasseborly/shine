@@ -1,11 +1,14 @@
 # Shine
 
 [![Travis][build-badge]][build]
+[![License][license-badge]][license]
 
 Small CLI for controlling LIFX bulbs.
 
 [build-badge]: https://img.shields.io/travis/lasseborly/shine/master.svg?style=flat-square
 [build]: https://travis-ci.org/lasseborly/shine
+[license-badge]: https://img.shields.io/npm/l/shine.svg?style=flat-square
+[license]: https://www.npmjs.com/package/shine
 
 ## Install
 
