@@ -3,7 +3,13 @@
 
 const cmd = require('commander')
 const https = require('https')
-const token = require('./token.js')
+let token = null;
+
+try {
+  token = require('./token.js') 
+} catch (error) {
+  token = process.env.LIFX_TOKEN
+}
 
 cmd
   .version('0.0.1')

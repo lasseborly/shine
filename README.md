@@ -1,6 +1,11 @@
 # Shine
 
+[![Travis][build-badge]][build]
+
 Small CLI for controlling LIFX bulbs.
+
+[build-badge]: https://img.shields.io/travis/lasseborly/shine/master.svg?style=flat-square
+[build]: https://travis-ci.org/lasseborly/shine
 
 ## Install
 
